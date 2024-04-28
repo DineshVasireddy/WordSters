@@ -7,11 +7,10 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.awt.event.*;
 
 //Class for 2 player game panel
 public class Multiplayer extends JPanel implements Client {
@@ -37,9 +36,12 @@ public class Multiplayer extends JPanel implements Client {
     private PrintWriter writer;
     private Letters letters;
 
+
     private final Font TITLEFONT = new Font("aharoni", Font.BOLD, 50);
     private final Font NAMEFONT = new Font("aharoni", Font.BOLD, 25);
     private final Font TEXTFONT = new Font("aharoni", Font.BOLD, 20);
+    private ChatPanel chatPanel;
+    private boolean chatOpen;
 
     //Constructor takes main (to return to menu), socket to read data from and the user's name
     public Multiplayer(Main main, Socket socket, String name) throws IOException {
@@ -57,6 +59,8 @@ public class Multiplayer extends JPanel implements Client {
         inGame = false;
         oppPlayed = false;
         playerPlayed = false;
+        chatPanel = new ChatPanel();
+        chatOpen = false;
         writer = new PrintWriter(socket.getOutputStream(), true);
 
         //Creating thread with eventLogger using socket
@@ -136,6 +140,8 @@ public class Multiplayer extends JPanel implements Client {
                         }
                     }
 
+                    
+
                 //Telling server user pressed enter
                 } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if (messageCode != 1) {
@@ -146,6 +152,34 @@ public class Multiplayer extends JPanel implements Client {
                 }
             }
         });
+
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_BACK_QUOTE) {
+                    toggleChatPanel();
+                }
+            }
+        });
+    }
+
+    private void toggleChatPanel() {
+        if (!chatOpen) {
+            // Add chat panel to the main panel
+            add(chatPanel);
+            chatOpen = true;
+            chatPanel.inputField.setVisible(true);
+            chatPanel.requestFocusInWindow(); // Focus on text field for typing
+            revalidate();
+            repaint();
+            
+        } else {
+            // Remove chat panel from the main panel
+            remove(chatPanel);
+            chatOpen = false;
+            revalidate();
+            repaint();
+        }
     }
 
     //Shutdown method for when going back to menu

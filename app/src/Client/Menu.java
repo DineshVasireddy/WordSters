@@ -3,6 +3,9 @@ package Client;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import com.google.common.net.InetAddresses;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -14,13 +17,15 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 //Class for the menu panel
 public class Menu extends JPanel {
     private JButton playButton;
     private JButton connectButton;
     private JTextField codeField;
-    private JTextField ipField;
+    // private JTextField ipField;
     private JTextField nameField;
     private String message;
     private boolean isError;
@@ -31,7 +36,7 @@ public class Menu extends JPanel {
 
     //Constructor for menu, adds buttons and input fields
     public Menu(Main m) {
-        message = "";
+        
 
         //Play button
         playButton = new JButton("PLAY");
@@ -50,6 +55,7 @@ public class Menu extends JPanel {
         connectButton.setFocusPainted(false);
         //Tries to join lobby
         connectButton.addActionListener(a -> {
+            message = "";
 
             //Checking if user entered a name
             if (nameField.getText().length() > 0) {
@@ -62,7 +68,8 @@ public class Menu extends JPanel {
 
                     //Trying to connect to server (crashes if server doesn't respond within 1 second)
                     socket = new Socket();
-                    socket.connect(new InetSocketAddress(ipField.getText(), 6666), 1000);
+                    InetAddress ipAddress = InetAddress.getLocalHost();
+                    socket.connect(new InetSocketAddress(ipAddress.getHostAddress(), 6666), 2000);
 
                     //Connection to server made, sending lobby code
                     PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
@@ -74,6 +81,7 @@ public class Menu extends JPanel {
 
                     if (response.equals("2")) {
                         //Changing panel to 2 player game
+                        
                         m.setPanel(new Multiplayer(m, socket, nameField.getText()));
                     } else if (response.equals("3")) {
                         //Changing panel to 3 player game
@@ -110,11 +118,11 @@ public class Menu extends JPanel {
         codeField.setHorizontalAlignment(JTextField.CENTER);
 
         //Server IP field
-        ipField = new JTextField();
-        ipField.setBounds(200, 345, 200, 25);
-        ipField.setBackground(Color.LIGHT_GRAY);
-        ipField.setFont(TEXTFONT);
-        ipField.setHorizontalAlignment(JTextField.CENTER);
+        // ipField = new JTextField();
+        // ipField.setBounds(200, 345, 200, 25);
+        // ipField.setBackground(Color.LIGHT_GRAY);
+        // ipField.setFont(TEXTFONT);
+        // ipField.setHorizontalAlignment(JTextField.CENTER);
 
         //User name field
         nameField = new JTextField();
@@ -129,7 +137,7 @@ public class Menu extends JPanel {
         this.add(playButton);
         this.add(connectButton);
         this.add(codeField);
-        this.add(ipField);
+        // this.add(ipField);
         this.add(nameField);
     }
 
@@ -148,7 +156,6 @@ public class Menu extends JPanel {
         g2.drawString("Singleplayer", 300 - g2.getFontMetrics().stringWidth("Singleplayer") / 2, 150);
         g2.drawString("Multiplayer", 300 - g2.getFontMetrics().stringWidth("Multiplayer") / 2, 300);
         g2.setFont(TEXTFONT);
-        g2.drawString("Server IP", 300 - g2.getFontMetrics().stringWidth("Server IP") / 2, 335);
         g2.drawString("Lobby Code", 300 - g2.getFontMetrics().stringWidth("Lobby Code") / 2, 410);
         g2.drawString("IGN", 300 - g2.getFontMetrics().stringWidth("IGN") / 2, 480);
 
@@ -159,6 +166,6 @@ public class Menu extends JPanel {
         } else {
             g2.setColor(Color.GREEN);
         }
-        g2.drawString(message, 300 - g2.getFontMetrics().stringWidth(message) / 2, 625);
+        // g2.drawString(message, 300 - g2.getFontMetrics().stringWidth(message) / 2, 625);
     }
 }

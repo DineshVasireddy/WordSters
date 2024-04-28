@@ -2,6 +2,8 @@ package Server;
 
 import java.util.HashMap;
 
+import Client.ChatPanel;
+
 //Class used to manage a two player game
 public class TwoPlayerGame implements Game {
     private Player playerOne;
@@ -157,6 +159,7 @@ public class TwoPlayerGame implements Game {
     }
 
     public void sendChatMessage(String playerName, String message) {
+        
         if (playerName.equals(playerOne.getName())) {
             chatPanelPlayerTwo.appendMessage(playerName + ": " + message); // Display the message in the other player's chat panel
         } else {
@@ -174,6 +177,11 @@ public class TwoPlayerGame implements Game {
         } else {
             chatPanelPlayerTwo.appendMessage(playerName + ": " + message);
         }
+    }
+
+    public synchronized void setChatMessage(String playerName, String message) {
+        // Process the received chat message and display it
+        receiveChatMessage(playerName, message);
     }
 
     

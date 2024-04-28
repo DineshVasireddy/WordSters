@@ -5,6 +5,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import Client.ChatPanel;
+
 // Player class used to receive data from a socket
 public class Player implements Runnable {
     private BufferedReader reader;
@@ -17,7 +19,7 @@ public class Player implements Runnable {
     private ChatPanel chatPanel; // Declare chatPanel variable
 
     // Constructor takes only a connected socket
-    public Player(Socket s) throws Exception {
+    public Player(Socket s, ChatPanel chatPanel) throws Exception {
         active = true;
         socket = s;
         game = null;
@@ -27,7 +29,7 @@ public class Player implements Runnable {
 
         // First piece of data received is always the player's name
         name = reader.readLine();
-
+        this.chatPanel = chatPanel;
         // Starting new thread to infinitely wait for data from socket
         thread = new Thread(this);
         thread.start();
@@ -98,13 +100,16 @@ public class Player implements Runnable {
 
     // Method to send a chat message to the other player
     public void sendChatMessage(String message) {
-        write("C" + message);
+        System.out.println("TRYING TO SEND MESSAGE");
+        if (game != null) {
+            game.sendChatMessage(name, message); // Call sendChatMessage of the game
+        }
     }
 
     // Method to process and display chat messages received from the server
     private void processChatMessage(String message) {
-        if (chatPanel != null) { // Check if chat panel is set
-            chatPanel.appendMessage(message); // Display the received message in the chat panel
+        if (chatPanel != null) {
+            chatPanel.appendMessage(message);
         }
     }
     // Method to send a chat message to the server
