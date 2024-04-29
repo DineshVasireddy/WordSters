@@ -100,16 +100,29 @@ public class Player implements Runnable {
 
     // Method to send a chat message to the other player
     public void sendChatMessage(String message) {
+<<<<<<< HEAD
         System.out.println("GETNF");
         if (writer != null) {
             writer.println("C" + message); // Prefix "C" to indicate a chat message
         }
         chatPanel.appendMessage(message);
+=======
+        System.out.println("TRYING TO SEND MESSAGE");
+        if (game != null) {
+            game.sendChatMessage(name, message); // Call sendChatMessage of the game
+        }
+>>>>>>> a29278b514cd480708f3970e76eff51c48eeba95
     }
 
     // Method to process and display chat messages received from the server
     private void processChatMessage(String message) {
+<<<<<<< HEAD
         chatPanel.appendMessage(message);
+=======
+        if (chatPanel != null) {
+            chatPanel.appendMessage(message);
+        }
+>>>>>>> a29278b514cd480708f3970e76eff51c48eeba95
     }
 
     

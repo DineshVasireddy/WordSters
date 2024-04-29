@@ -156,6 +156,7 @@ public class TwoPlayerGame implements Game {
     }
 
     public void sendChatMessage(String playerName, String message) {
+        
         if (playerName.equals(playerOne.getName())) {
             chatPanelPlayerTwo.appendMessage(playerName + ": " + message); // Display the message in the other player's chat panel
         } else {
@@ -172,7 +173,5 @@ public class TwoPlayerGame implements Game {
         chatPanelPlayerTwo.appendMessage(playerName + ": " + message);
     }
 
-
-    
     
 }
