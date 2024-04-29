@@ -3,11 +3,7 @@ package Server;
 import javax.swing.*;
 
 import Client.ChatPanel;
-<<<<<<< HEAD
 import java.util.Collections;
-=======
-
->>>>>>> a29278b514cd480708f3970e76eff51c48eeba95
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -59,17 +55,12 @@ public class Server {
         }
         String input = "";
         // Infinite loop to start a new game after one ends
-        ChatPanel chatPanel = ChatPanel.getInstance();
         while (true) {
             System.out.println(ANSI_GREEN + "Creating New Lobby" + ANSI_RESET);
-<<<<<<< HEAD
             ChatPanel chatPanelPlayerOne = new ChatPanel(); // Create a new chat panel for player one
             ChatPanel chatPanelPlayerTwo = new ChatPanel(); 
             ChatPanel chatPanelPlayerThree = new ChatPanel();
             ChatPanel chatPanelPlayerFour = new ChatPanel();
-=======
-            
->>>>>>> a29278b514cd480708f3970e76eff51c48eeba95
 
             // Getting lobby code from user
             // while (true) {
@@ -103,7 +94,6 @@ public class Server {
 
             if (lobbySize.equals("2")) {
                 // Create a single chat panel
-<<<<<<< HEAD
                 playerOne = getPlayer(chatPanelPlayerOne);
                 playerOne.setChatPanel(chatPanelPlayerOne);
 
@@ -118,19 +108,6 @@ public class Server {
 
                 System.out.println(playerTwo.getName() + " Joined");
                 
-=======
-                playerOne = getPlayer(chatPanel);
-                playerOne.setChatPanel(chatPanel);
-                chatPanel.setPlayers(playerOne); // Set the chat panel for player one
-                System.out.println(playerOne.getName() + " Joined");
-
-                playerTwo = getPlayer(chatPanel);
-                playerTwo.setChatPanel(chatPanel);
-                chatPanel.setPlayers(playerTwo); // Set the chat panel for player two
-                System.out.println(playerTwo.getName() + " Joined");
-                playerOne.write("playerName:" + playerOne.getName());
-                playerTwo.write("playerName:" + playerTwo.getName());
->>>>>>> a29278b514cd480708f3970e76eff51c48eeba95
                 
                 
                 // Creating new game with both players
