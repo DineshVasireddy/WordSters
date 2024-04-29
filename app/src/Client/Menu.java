@@ -85,6 +85,9 @@ public class Menu extends JPanel {
                     } else if (response.equals("3")) {
                         //Changing panel to 3 player game
                         m.setPanel(new Multiplayers(m, socket, nameField.getText()));
+                    } else if (response.equals("4")) {
+                        //Changing panel to 2 player game
+                        m.setPanel(new Multiplayer(m, socket, nameField.getText()));
                     } else {
 
                         //User entered incorrect lobby code

@@ -29,9 +29,6 @@ public class TwoPlayerGame implements Game {
         playerOne = p1;
         playerTwo = p2;
     
-        // Pass the chat panels to the players
-        playerOne.setChatPanel(chatPanelPlayerOne);
-        playerTwo.setChatPanel(chatPanelPlayerTwo);
     
         //Setting player's game variable
         playerOne.setGame(this);
@@ -152,14 +149,13 @@ public class TwoPlayerGame implements Game {
 
         //If enters is 3, all players are ready
         if (enters == 2) {
-
             //Waking up thread
             notify();
+            sendChatMessage(playerName, "Joined");
         }
     }
 
     public void sendChatMessage(String playerName, String message) {
-        
         if (playerName.equals(playerOne.getName())) {
             chatPanelPlayerTwo.appendMessage(playerName + ": " + message); // Display the message in the other player's chat panel
         } else {
@@ -171,18 +167,12 @@ public class TwoPlayerGame implements Game {
 
     public void receiveChatMessage(String playerName, String message) {
         // Process the received chat message
-        // Display it in the appropriate player's chat panel
-        if (playerName.equals(playerOne.getName())) {
-            chatPanelPlayerOne.appendMessage(playerName + ": " + message);
-        } else {
-            chatPanelPlayerTwo.appendMessage(playerName + ": " + message);
-        }
+        // Display it in both players' chat panels
+        chatPanelPlayerOne.appendMessage(playerName + ": " + message);
+        chatPanelPlayerTwo.appendMessage(playerName + ": " + message);
     }
 
-    public synchronized void setChatMessage(String playerName, String message) {
-        // Process the received chat message and display it
-        receiveChatMessage(playerName, message);
-    }
 
+    
     
 }

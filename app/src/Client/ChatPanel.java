@@ -34,7 +34,12 @@ public class ChatPanel extends JPanel {
         actionMap.put("sendMessage", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                sendMessageAndHideInputField(); // Send message and hide input field
+                System.out.println("HERE IT GOES");
+                for (Player player : players) {
+                    System.out.println("IM LOOKING FOR THIS " + player.getName());
+                }
+                
+                sendMessage(); // Send message and hide input field
             }
         });
     }
@@ -53,17 +58,11 @@ public class ChatPanel extends JPanel {
         String message = inputField.getText().trim();
         System.out.println(players);
         if (!message.isEmpty()) {
-            
-            for (Player player : players) {
-                player.sendChatMessage(message);
-            }
-            inputField.setText("");
+            chatArea.append(message + '\n');
+            inputField.setText(""); // Clear the input field
+            inputField.setVisible(false); 
         }
     }
 
-    private void sendMessageAndHideInputField() {
-        sendMessage(); // Send the message
-        inputField.setText(""); // Clear the input field
-        inputField.setVisible(false); // Hide the input field
-    }
+    
 }
