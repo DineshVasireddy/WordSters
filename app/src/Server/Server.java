@@ -1,6 +1,9 @@
 package Server;
 
 import javax.swing.*;
+
+import Client.ChatPanel;
+
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,6 +16,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
+
 
 // Server main class used for starting games
 public class Server {
@@ -40,7 +44,7 @@ public class Server {
         scanner = new Scanner(file);
         words = new HashMap<>();
         i = 0;
-
+        
         // Adding all words from words.txt into words' hashmap
         while (scanner.hasNextLine()) {
             words.put(i, scanner.nextLine());
@@ -50,6 +54,7 @@ public class Server {
         // Infinite loop to start a new game after one ends
         while (true) {
             System.out.println(ANSI_GREEN + "Creating New Lobby" + ANSI_RESET);
+            ChatPanel chatPanel = new ChatPanel(); // Create a new chat panel
 
             // Getting lobby code from user
             // while (true) {
@@ -84,21 +89,20 @@ public class Server {
 
             if (lobbySize.equals("2")) {
                 // Create a single chat panel
-                ChatPanel chatPanel = new ChatPanel();
-                
-                // Getting first player
-                playerOne = getPlayer();
+                playerOne = getPlayer(chatPanel);
+                playerOne.setChatPanel(chatPanel);
+                chatPanel.setPlayers(playerOne); // Set the chat panel for player one
+                // players.add(playerOne); // Add player one to the list of players
                 System.out.println(playerOne.getName() + " Joined");
                 
+                
                 // Getting second player
-                playerTwo = getPlayer();
+                playerTwo = getPlayer(chatPanel);
+                playerTwo.setChatPanel(chatPanel);
+                chatPanel.setPlayers(playerTwo); // Set the chat panel for player two
+                // players.add(playerTwo);
                 System.out.println(playerTwo.getName() + " Joined");
                 
-                // Associate both players with the same chat panel
-                List<Player> players = new ArrayList<>();
-                players.add(playerOne);
-                players.add(playerTwo);
-                chatPanel.setPlayers(players);
                 
                 // Set the chat panel for each player
                 playerOne.setChatPanel(chatPanel);
@@ -122,7 +126,7 @@ public class Server {
     }
 
     // Method that waits from a socket to make a connection then creates a Player using socket
-    public Player getPlayer() throws Exception {
+    public Player getPlayer(ChatPanel chatPanel) throws Exception {
         Socket s;
         BufferedReader reader;
         PrintWriter writer;
@@ -133,6 +137,7 @@ public class Server {
 
             // Waiting for a socket to connect
             s = serverSocket.accept();
+
 
             // Setting timeout for connection reads
             s.setSoTimeout(2000);
@@ -147,7 +152,7 @@ public class Server {
                 // Making sure lobby code is correct
                 if (code.equals(input)) {
                     writer.println(lobbySize);
-                    return new Player(s);
+                    return new Player(s, chatPanel);
 
                     // If lobby code is incorrect, closing connection and telling socket they sent incorrect code
                 } else {
